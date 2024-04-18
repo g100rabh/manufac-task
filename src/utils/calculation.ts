@@ -1,5 +1,6 @@
 import { GroupedData, WineData } from "../types";
 
+// Calculation flavanoids
 export const statCalculationForFlavanoids = (data: GroupedData) => {
   let result = [];
   for (let key in data) {
@@ -19,6 +20,7 @@ export const statCalculationForFlavanoids = (data: GroupedData) => {
   return result;
 };
 
+// Calculation flavanoids
 export const statCalculationForGamma = (data: GroupedData) => {
   let result = [];
   for (let key in data) {
@@ -34,15 +36,18 @@ export const statCalculationForGamma = (data: GroupedData) => {
   return result;
 };
 
+// Calculation of gamma for a wine
 export const calculateGamma = (wine: WineData) => {
   const ash = typeof wine.Ash === "string" ? parseFloat(wine.Ash) : wine.Ash;
   return ((ash * wine.Hue) / wine.Magnesium).toFixed(3);
 };
 
+// Calculation mean
 export const mean = (data: number[]) => {
   return data.reduce((acc, curr) => acc + curr, 0) / data.length;
 };
 
+// Calculation mode
 export const mode = (data: number[]): number[] => {
   const modeMap: Map<number, number> = new Map();
   data.forEach((i: number) => {
@@ -63,6 +68,7 @@ export const mode = (data: number[]): number[] => {
   return modes;
 };
 
+// Calculation median
 export const median = (data: number[]) => {
   const sortedArray = [...data].sort((a, b) => a - b);
   return sortedArray.length % 2 === 0

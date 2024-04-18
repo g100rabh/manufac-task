@@ -7,6 +7,7 @@ import { MantineProvider } from "@mantine/core";
 import GammaTable from "./component/GammaTable";
 
 function App() {
+  // Grouped data for calculation with unnecessary properties removed.
   const groupedData: GroupedData = wineData.reduce(
     (groups: GroupedData, wine) => {
       const classNumber = `Class${wine.Alcohol}`;
