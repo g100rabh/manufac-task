@@ -1,10 +1,43 @@
-import { GroupedData, wineDataTypes } from "../types";
+import { GroupedData, WineData } from "../types";
 
-export const statCalculationForFlavanoids = () => {};
+export const statCalculationForFlavanoids = (data: GroupedData) => {
+  let result = [];
+  for (let key in data) {
+    const flavanoids = data[key].map((item) => {
+      return typeof item.Flavanoids === "string"
+        ? parseFloat(item.Flavanoids)
+        : item.Flavanoids;
+    });
+    result.push({
+      [key]: {
+        mean: mean(flavanoids),
+        mode: mode(flavanoids),
+        median: median(flavanoids),
+      },
+    });
+  }
+  return result;
+};
 
-export const statCalculationForGamma = () => {};
+export const statCalculationForGamma = (data: GroupedData) => {
+  let result = [];
+  for (let key in data) {
+    const gamma = data[key].map((item) => parseFloat(calculateGamma(item)));
+    result.push({
+      [key]: {
+        mean: mean(gamma),
+        mode: mode(gamma),
+        median: median(gamma),
+      },
+    });
+  }
+  return result;
+};
 
-export const calculateGamma = () => {};
+export const calculateGamma = (wine: WineData) => {
+  const ash = typeof wine.Ash === "string" ? parseFloat(wine.Ash) : wine.Ash;
+  return ((ash * wine.Hue) / wine.Magnesium).toFixed(3);
+};
 
 export const mean = (data: number[]) => {
   return data.reduce((acc, curr) => acc + curr, 0) / data.length;
@@ -37,39 +70,4 @@ export const median = (data: number[]) => {
         sortedArray[sortedArray.length / 2]) /
         2
     : sortedArray[Math.floor(sortedArray.length / 2)];
-};
-
-export const groupData = (data: wineDataTypes[]) => {
-  data.reduce((groups: GroupedData, wine) => {
-    // Extract the class number from the "Alcohol" property
-    const classNumber = `class${wine.Alcohol}`;
-
-    // Check if the group for the class exists, if not create it
-    if (!groups[classNumber]) {
-      groups[classNumber] = [];
-    }
-
-    const {
-      Alcohol,
-      Ash,
-      Magnesium,
-      Flavanoids,
-      Proanthocyanins,
-      Hue,
-      Unknown,
-    } = wine;
-
-    // Add the wine data to the corresponding group
-    groups[classNumber].push({
-      Alcohol,
-      Ash,
-      Magnesium,
-      Flavanoids,
-      Proanthocyanins,
-      Hue,
-      Unknown,
-    });
-
-    return groups;
-  }, {});
 };

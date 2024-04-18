@@ -1,12 +1,15 @@
 import React from "react";
+import FlavnoidsTable from "./component/FlavnoidsTable";
 
 import { wineData } from "./data/data";
 import { GroupedData } from "./types";
+import { MantineProvider } from "@mantine/core";
+import GammaTable from "./component/GammaTable";
 
 function App() {
   const groupedData: GroupedData = wineData.reduce(
     (groups: GroupedData, wine) => {
-      const classNumber = `class${wine.Alcohol}`;
+      const classNumber = `Class${wine.Alcohol}`;
 
       if (!groups[classNumber]) {
         groups[classNumber] = [];
@@ -37,9 +40,12 @@ function App() {
     {}
   );
 
-  console.log(groupedData);
-
-  return <>App</>;
+  return (
+    <MantineProvider>
+      <FlavnoidsTable data={groupedData} />
+      <GammaTable data={groupedData} />
+    </MantineProvider>
+  );
 }
 
 export default App;
